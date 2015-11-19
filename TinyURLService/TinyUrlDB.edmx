@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TinyURLServiceModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="TinyURLServiceModelStoreContainer">
+          <EntitySet Name="URLs" EntityType="TinyURLServiceModel.Store.URLs" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UrlStats" EntityType="TinyURLServiceModel.Store.UrlStats" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_dbo_UrlStats_dbo_URLs_UrlId" Association="TinyURLServiceModel.Store.FK_dbo_UrlStats_dbo_URLs_UrlId">
+            <End Role="URLs" EntitySet="URLs" />
+            <End Role="UrlStats" EntitySet="UrlStats" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="URLs">
+          <Key>
+            <PropertyRef Name="UrlId" />
+          </Key>
+          <Property Name="UrlId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LongUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ShortUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Hits" Type="int" Nullable="false" />
+          <Property Name="GeneratedDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UrlStats">
+          <Key>
+            <PropertyRef Name="UrlStatId" />
+          </Key>
+          <Property Name="UrlStatId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserAgent" Type="nvarchar(max)" />
+          <Property Name="UserHostAddress" Type="nvarchar(max)" />
+          <Property Name="UserLanguage" Type="nvarchar(max)" />
+          <Property Name="UrlRefferer" Type="nvarchar(max)" />
+          <Property Name="IsMobile" Type="bit" Nullable="false" />
+          <Property Name="Browser" Type="nvarchar(max)" />
+          <Property Name="MajorVersion" Type="int" Nullable="false" />
+          <Property Name="UrlId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_UrlStats_dbo_URLs_UrlId">
+          <End Role="URLs" Type="TinyURLServiceModel.Store.URLs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UrlStats" Type="TinyURLServiceModel.Store.UrlStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="URLs">
+              <PropertyRef Name="UrlId" />
+            </Principal>
+            <Dependent Role="UrlStats">
+              <PropertyRef Name="UrlId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TinyURLServiceModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TinyURLServiceEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="URLs" EntityType="TinyURLServiceModel.URL" />
+          <EntitySet Name="UrlStats" EntityType="TinyURLServiceModel.UrlStat" />
+          <AssociationSet Name="FK_dbo_UrlStats_dbo_URLs_UrlId" Association="TinyURLServiceModel.FK_dbo_UrlStats_dbo_URLs_UrlId">
+            <End Role="URLs" EntitySet="URLs" />
+            <End Role="UrlStats" EntitySet="UrlStats" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="URL">
+          <Key>
+            <PropertyRef Name="UrlId" />
+          </Key>
+          <Property Name="UrlId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="LongUrl" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ShortUrl" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Hits" Type="Int32" Nullable="false" />
+          <Property Name="GeneratedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="UrlStats" Relationship="TinyURLServiceModel.FK_dbo_UrlStats_dbo_URLs_UrlId" FromRole="URLs" ToRole="UrlStats" />
+        </EntityType>
+        <EntityType Name="UrlStat">
+          <Key>
+            <PropertyRef Name="UrlStatId" />
+          </Key>
+          <Property Name="UrlStatId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAgent" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserHostAddress" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserLanguage" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UrlRefferer" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="IsMobile" Type="Boolean" Nullable="false" />
+          <Property Name="Browser" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="MajorVersion" Type="Int32" Nullable="false" />
+          <Property Name="UrlId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="URL" Relationship="TinyURLServiceModel.FK_dbo_UrlStats_dbo_URLs_UrlId" FromRole="UrlStats" ToRole="URLs" />
+        </EntityType>
+        <Association Name="FK_dbo_UrlStats_dbo_URLs_UrlId">
+          <End Role="URLs" Type="TinyURLServiceModel.URL" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UrlStats" Type="TinyURLServiceModel.UrlStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="URLs">
+              <PropertyRef Name="UrlId" />
+            </Principal>
+            <Dependent Role="UrlStats">
+              <PropertyRef Name="UrlId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TinyURLServiceModelStoreContainer" CdmEntityContainer="TinyURLServiceEntities">
+          <EntitySetMapping Name="URLs">
+            <EntityTypeMapping TypeName="TinyURLServiceModel.URL">
+              <MappingFragment StoreEntitySet="URLs">
+                <ScalarProperty Name="UrlId" ColumnName="UrlId" />
+                <ScalarProperty Name="LongUrl" ColumnName="LongUrl" />
+                <ScalarProperty Name="ShortUrl" ColumnName="ShortUrl" />
+                <ScalarProperty Name="Hits" ColumnName="Hits" />
+                <ScalarProperty Name="GeneratedDate" ColumnName="GeneratedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UrlStats">
+            <EntityTypeMapping TypeName="TinyURLServiceModel.UrlStat">
+              <MappingFragment StoreEntitySet="UrlStats">
+                <ScalarProperty Name="UrlStatId" ColumnName="UrlStatId" />
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="UserHostAddress" ColumnName="UserHostAddress" />
+                <ScalarProperty Name="UserLanguage" ColumnName="UserLanguage" />
+                <ScalarProperty Name="UrlRefferer" ColumnName="UrlRefferer" />
+                <ScalarProperty Name="IsMobile" ColumnName="IsMobile" />
+                <ScalarProperty Name="Browser" ColumnName="Browser" />
+                <ScalarProperty Name="MajorVersion" ColumnName="MajorVersion" />
+                <ScalarProperty Name="UrlId" ColumnName="UrlId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
